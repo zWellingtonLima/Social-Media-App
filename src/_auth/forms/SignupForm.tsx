@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +16,7 @@ import { Input } from "@/components/ui/input";
 
 import { SignupValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
+import { createUserAccount } from "@/lib/appwrite/api";
 
 const SignupForm = () => {
   const isLoading = false;
@@ -31,8 +31,9 @@ const SignupForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof SignupValidation>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof SignupValidation>) => {
+    const newUser = await createUserAccount(values)
+    
   };
 
   return (
@@ -48,7 +49,7 @@ const SignupForm = () => {
 
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col w-full mt-4"
+          className="flex flex-col gap-5 w-full mt-4"
         >
           <FormField
             control={form.control}
@@ -112,9 +113,14 @@ const SignupForm = () => {
             )}
           </Button>
 
-          <p className="text-small-regular text-light-2 text-center mt-2">
+          <p className="text-small-regular text-light-2 text-center">
             Already have an account?
-            <Link to="/sign-in" className='text-primary-500 text-small-semibold ml-1'>Log in</Link>
+            <Link
+              to="/sign-in"
+              className="text-primary-500 text-small-semibold ml-1"
+            >
+              Log in
+            </Link>
           </p>
         </form>
       </div>
